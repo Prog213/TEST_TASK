@@ -12,17 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TEST_TASK.View_Models;
-using TEST_TASK.Views;
 
-namespace TEST_TASK
+namespace TEST_TASK.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for DetailPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class DetailPage : Page
     {
-        public MainWindow()
+        public DetailPage()
         {
             InitializeComponent();
         }

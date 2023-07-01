@@ -13,18 +13,27 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TEST_TASK.View_Models;
-using TEST_TASK.Views;
 
-namespace TEST_TASK
+namespace TEST_TASK.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainPage : Page
     {
-        public MainWindow()
+        private MainPageModel viewModel;
+
+        public MainPage()
         {
             InitializeComponent();
+            viewModel = new MainPageModel();
+            DataContext = viewModel;
+            Loaded += Window_Loaded;
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            await viewModel.LoadTopCurrencies(10);
         }
     }
 }
