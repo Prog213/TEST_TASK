@@ -65,10 +65,6 @@ public class API
 
                 }
             }
-            else
-            {
-                Console.WriteLine($"Error: {response.StatusCode}");
-            }
         }
         catch (Exception ex)
         {

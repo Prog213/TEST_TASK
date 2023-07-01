@@ -9,24 +9,24 @@
     public class MainViewModel : INotifyPropertyChanged
     {
         private API api;
-        private ObservableCollection<Cryptocurrency> topCurrencies;
+        private ObservableCollection<Cryptocurrency> cryptocurrencies;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<Cryptocurrency> TopCurrencies
+        public ObservableCollection<Cryptocurrency> Cryptocurrencies
         {
-            get { return topCurrencies; }
+            get { return cryptocurrencies; }
             set
             {
-                topCurrencies = value;
-                OnPropertyChanged(nameof(TopCurrencies));
+                cryptocurrencies = value;
+                OnPropertyChanged(nameof(Cryptocurrencies));
             }
         }
 
         public MainViewModel()
         {
             api = new API();
-            TopCurrencies = new ObservableCollection<Cryptocurrency>();
+            Cryptocurrencies = new ObservableCollection<Cryptocurrency>();
         }
 
         public async Task LoadTopCurrencies(int count)
@@ -34,10 +34,10 @@
             var currencies = await api.GetTopCurrencies(count);
             if (currencies != null)
             {
-                TopCurrencies.Clear();
+                Cryptocurrencies.Clear();
                 foreach (var currency in currencies)
                 {
-                    TopCurrencies.Add(currency);
+                    Cryptocurrencies.Add(currency);
                 }
             }
         }

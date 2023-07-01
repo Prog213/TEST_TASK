@@ -26,7 +26,9 @@ namespace TEST_TASK
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            viewModel = new MainViewModel();
+            DataContext = viewModel;
+            Loaded += Window_Loaded;
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
