@@ -14,38 +14,12 @@ namespace TEST_TASK.View_Models
     {
         public ICommand DetailPageCommand { get; }
 
-        private API api;
+        private CurrencyStore _currencyStore;
+        public ObservableCollection<Cryptocurrency> Cryptocurrencies => _currencyStore.Cryptocurrencies;
 
-        private ObservableCollection<Cryptocurrency> cryptocurrencies;
-
-        public ObservableCollection<Cryptocurrency> Cryptocurrencies
+        public CurrenciesPageModel(CurrencyStore currencyStore)
         {
-            get { return cryptocurrencies; }
-            set
-            {
-                cryptocurrencies = value;
-                OnPropertyChanged(nameof(Cryptocurrencies));
-            }
-        }
-
-        public CurrenciesPageModel()
-        {
-            api = new API();
-            Cryptocurrencies = new ObservableCollection<Cryptocurrency>();
-            LoadTopCurrencies(10);
-        }
-
-        public async void LoadTopCurrencies(int count)
-        {
-            var currencies = await api.GetTopCurrencies(count);
-            if (currencies != null)
-            {
-                Cryptocurrencies.Clear();
-                foreach (var currency in currencies)
-                {
-                    Cryptocurrencies.Add(currency);
-                }
-            }
+            _currencyStore= currencyStore;
         }
     }
 }

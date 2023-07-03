@@ -7,49 +7,22 @@ namespace TEST_TASK.View_Models
 {
     public class DetailPageModel : ViewModelBase
     {
-        private API api;
-        private ObservableCollection<Cryptocurrency> cryptocurrencies;
-        private Cryptocurrency selectedCryptocurrency;
-
-        public ObservableCollection<Cryptocurrency> Cryptocurrencies
-        {
-            get { return cryptocurrencies; }
-            set
-            {
-                cryptocurrencies = value;
-                OnPropertyChanged(nameof(Cryptocurrencies));
-            }
-        }
+        private CurrencyStore _currencyStore;
+        public ObservableCollection<Cryptocurrency> Cryptocurrencies => _currencyStore.Cryptocurrencies;
 
         public Cryptocurrency SelectedCryptocurrency
         {
-            get { return selectedCryptocurrency; }
+            get => _currencyStore.SelectedCryptocurrency;
             set
             {
-                selectedCryptocurrency = value;
+                _currencyStore.SelectedCryptocurrency = value;
                 OnPropertyChanged(nameof(SelectedCryptocurrency));
             }
         }
 
-        public DetailPageModel()
+        public DetailPageModel(CurrencyStore currencyStore)
         {
-            api = new API();
-            Cryptocurrencies = new ObservableCollection<Cryptocurrency>();
-            LoadTopCurrencies(10);
-        }
-
-        public async void LoadTopCurrencies(int count)
-        {
-            var currencies = await api.GetTopCurrencies(count);
-            if (currencies != null)
-            {
-                Cryptocurrencies.Clear();
-                foreach (var currency in currencies)
-                {
-                    Cryptocurrencies.Add(currency);
-                }
-            }
-            SelectedCryptocurrency = Cryptocurrencies[0];
+            _currencyStore = currencyStore;
         }
     }
 }

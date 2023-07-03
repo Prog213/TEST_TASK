@@ -13,8 +13,9 @@ namespace TEST_TASK.View_Models
 {
     class SearchPageModel : ViewModelBase
     {
-        private API api;
-        private ObservableCollection<Cryptocurrency> Cryptocurrencies;
+        private CurrencyStore _currencyStore;
+        public ObservableCollection<Cryptocurrency> Cryptocurrencies => _currencyStore.Cryptocurrencies;
+
         private ObservableCollection<Cryptocurrency> searchResults;
 
         public ObservableCollection<Cryptocurrency> SearchResults
@@ -41,26 +42,11 @@ namespace TEST_TASK.View_Models
 
         public ICommand SearchCommand { get; private set; }
 
-        public SearchPageModel()
+        public SearchPageModel(CurrencyStore currencyStore)
         {
-            api = new API();
-            Cryptocurrencies = new ObservableCollection<Cryptocurrency>();
+            _currencyStore = currencyStore;
             SearchResults = new ObservableCollection<Cryptocurrency>();
-            LoadCurrencies(10);
             SearchCommand = new RelayCommand(SearchCryptocurrencies);
-        }
-
-        public async void LoadCurrencies(int count)
-        {
-            var currencies = await api.GetTopCurrencies(count);
-            if (currencies != null)
-            {
-                Cryptocurrencies.Clear();
-                foreach (var currency in currencies)
-                {
-                    Cryptocurrencies.Add(currency);
-                }
-            }
         }
 
         private void SearchCryptocurrencies()

@@ -9,19 +9,21 @@ namespace TEST_TASK
     public partial class App : Application
     {
         private readonly NavigationStore _navigationStore;
+        private CurrencyStore _currencyStore;
 
         public App()
         {
             _navigationStore = new NavigationStore();
+            _currencyStore = new CurrencyStore();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            _navigationStore.CurrentViewModel = new CurrenciesPageModel();
+            _navigationStore.CurrentViewModel = new CurrenciesPageModel(_currencyStore);
 
             MainWindow = new MainWindow()
             {
-                DataContext = new MainViewModel(_navigationStore)
+                DataContext = new MainViewModel(_navigationStore,_currencyStore)
             };
 
             MainWindow.Show();
