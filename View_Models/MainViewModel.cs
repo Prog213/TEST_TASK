@@ -1,70 +1,49 @@
-﻿using GalaSoft.MvvmLight.Command;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.Command;
+using TEST_TASK.Commands;
 using TEST_TASK.Views;
 
 namespace TEST_TASK.View_Models
 {
-    
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : ViewModelBase
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        private readonly NavigationStore _navigationStore;
 
-        private Page Main;
-        private Page Detail;
-        private Page Search;
+        public ICommand CurrencyPageButton_Click { get; }
 
-        private Page _currentPage;
-        public Page CurrentPage
+        public ICommand DetailPageButton_Click { get; }
+
+        public ICommand SearchPageButton_Click { get;}
+
+        public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
+        public MainViewModel(NavigationStore navigationStore)
         {
-            set
-            {
-                _currentPage = value;
-                OnPropertyChanged(nameof(CurrentPage));
-            }
-            get { return _currentPage; }
+            _navigationStore = navigationStore;
+            _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
+
+            CurrencyPageButton_Click = new NavigateCommand<CurrenciesPageModel>
+                (new NavigationService<CurrenciesPageModel>( navigationStore, ()=> new CurrenciesPageModel()));
+            DetailPageButton_Click = new NavigateCommand<DetailPageModel>
+                (new NavigationService<DetailPageModel>(navigationStore, () => new DetailPageModel()));
+            SearchPageButton_Click = new NavigateCommand<SearchPageModel>
+                (new NavigationService<SearchPageModel>(navigationStore, () => new SearchPageModel()));
         }
 
-        public MainViewModel()
+        private void OnCurrentViewModelChanged()
         {
-            Main = new MainPage();
-            Detail = new DetailPage();
-            Search = new SearchPage();
-
-            CurrentPage = Main;
+            OnPropertyChanged(nameof(CurrentViewModel));
         }
 
-        public ICommand MainPageButton_Click
-        {
-            get
-            {
-                return new RelayCommand(() => CurrentPage = Main);
-            }
-        }
 
-        public ICommand DetailPageButton_Click
-        {
-            get
-            {
-                return new RelayCommand(() => CurrentPage = Detail);
-            }
-        }
 
-        public ICommand SearchPageButton_Click
-        {
-            get
-            {
-                return new RelayCommand(() => CurrentPage = Search);
-            }
-        }
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+
+        //public ICommand MainPageButton_Click => new RelayCommand(() => NavigationStore.NavigateCommand.Execute(new MainPage()));
+
+        //public ICommand DetailPageButton_Click => new RelayCommand(() => NavigationStore.NavigateCommand.Execute(new DetailPage()));
+
+        //public ICommand SearchPageButton_Click => new RelayCommand(() => NavigationStore.NavigateCommand.Execute(new SearchPage()));
     }
 }

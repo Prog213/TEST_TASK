@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace TEST_TASK.View_Models
 {
-    
-
-    public class MainPageModel : INotifyPropertyChanged
+    public class DetailPageModel : ViewModelBase
     {
         private API api;
         private ObservableCollection<Cryptocurrency> cryptocurrencies;
-
-        public event PropertyChangedEventHandler PropertyChanged;
+        private Cryptocurrency selectedCryptocurrency;
 
         public ObservableCollection<Cryptocurrency> Cryptocurrencies
         {
@@ -25,13 +21,24 @@ namespace TEST_TASK.View_Models
             }
         }
 
-        public MainPageModel()
+        public Cryptocurrency SelectedCryptocurrency
+        {
+            get { return selectedCryptocurrency; }
+            set
+            {
+                selectedCryptocurrency = value;
+                OnPropertyChanged(nameof(SelectedCryptocurrency));
+            }
+        }
+
+        public DetailPageModel()
         {
             api = new API();
             Cryptocurrencies = new ObservableCollection<Cryptocurrency>();
+            LoadTopCurrencies(10);
         }
 
-        public async Task LoadTopCurrencies(int count)
+        public async void LoadTopCurrencies(int count)
         {
             var currencies = await api.GetTopCurrencies(count);
             if (currencies != null)
@@ -42,11 +49,7 @@ namespace TEST_TASK.View_Models
                     Cryptocurrencies.Add(currency);
                 }
             }
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            SelectedCryptocurrency = Cryptocurrencies[0];
         }
     }
 }

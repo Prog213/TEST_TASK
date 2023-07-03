@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TEST_TASK.View_Models;
 
 namespace TEST_TASK.Views
 {
