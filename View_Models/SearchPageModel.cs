@@ -8,13 +8,25 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TEST_TASK.Commands;
 
 namespace TEST_TASK.View_Models
 {
     class SearchPageModel : ViewModelBase
     {
         private CurrencyStore _currencyStore;
+        private NavigationStore _navigationStore;
         public ObservableCollection<Cryptocurrency> Cryptocurrencies => _currencyStore.Cryptocurrencies;
+
+        public Cryptocurrency SelectedCryptocurrency
+        {
+            get { return null; }
+            set
+            {
+                _currencyStore.SelectedCryptocurrency = value;
+                OnPropertyChanged(nameof(SelectedCryptocurrency));
+            }
+        }
 
         private ObservableCollection<Cryptocurrency> searchResults;
 
@@ -40,13 +52,21 @@ namespace TEST_TASK.View_Models
             }
         }
 
-        public ICommand SearchCommand { get; private set; }
+        public ICommand SearchCommand { get;}
 
-        public SearchPageModel(CurrencyStore currencyStore)
+        public ICommand ListBox_Changed { get; }
+
+        public SearchPageModel(CurrencyStore currencyStore, NavigationStore navigationStore)
         {
+            _navigationStore = navigationStore;
             _currencyStore = currencyStore;
+
             SearchResults = new ObservableCollection<Cryptocurrency>();
+
             SearchCommand = new RelayCommand(SearchCryptocurrencies);
+            
+            ListBox_Changed = new NavigateCommand<DetailPageModel>
+                (new NavigationService<DetailPageModel>(_navigationStore, () => new DetailPageModel(_currencyStore)));
         }
 
         private void SearchCryptocurrencies()

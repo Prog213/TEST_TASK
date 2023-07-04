@@ -19,7 +19,7 @@ namespace TEST_TASK
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            _navigationStore.CurrentViewModel = new CurrenciesPageModel(_currencyStore);
+            _navigationStore.CurrentViewModel = new CurrenciesPageModel(_currencyStore, _navigationStore);
 
             MainWindow = new MainWindow()
             {

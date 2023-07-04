@@ -18,6 +18,10 @@
                Content="{Binding CurrentViewModel}">
             <Frame.Resources>
                 
+                <Style TargetType="Frame">
+                    <Setter Property="NavigationUIVisibility" Value="Hidden" />
+                </Style>
+                
                 <DataTemplate DataType="{x:Type vms:CurrenciesPageModel}">
                     <views:CurrienciesPage/>
                 </DataTemplate>
@@ -29,6 +33,10 @@
                 <DataTemplate DataType="{x:Type vms:SearchPageModel}">
                     <views:SearchPage />
                 </DataTemplate>
+
+                <DataTemplate DataType="{x:Type vms:ConvertPageModel}">
+                    <views:ConvertPage />
+                </DataTemplate>
             </Frame.Resources>
         </Frame>
 
@@ -36,6 +44,7 @@
             <Button Content="Main Page" Width="100" Height="20" Command="{Binding CurrencyPageButton_Click}"/>
             <Button Content="Detail Page" Width="100" Height="20" Command="{Binding DetailPageButton_Click}"/>
             <Button Content="Search Page" Width="100" Height="20" Command="{Binding SearchPageButton_Click}"/>
+            <Button Content="Convert Page" Width="100" Height="20" Command="{Binding ConvertPageButton_Click}"/>
         </StackPanel>
 
     </Grid>

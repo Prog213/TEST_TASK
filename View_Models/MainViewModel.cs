@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
 using TEST_TASK.Commands;
 using TEST_TASK.Views;
 
@@ -17,7 +16,9 @@ namespace TEST_TASK.View_Models
 
         public ICommand DetailPageButton_Click { get; }
 
-        public ICommand SearchPageButton_Click { get;}
+        public ICommand SearchPageButton_Click { get; }
+
+        public ICommand ConvertPageButton_Click { get; }
 
         public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
         public MainViewModel(NavigationStore navigationStore, CurrencyStore currencyStore)
@@ -27,11 +28,13 @@ namespace TEST_TASK.View_Models
             _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
 
             CurrencyPageButton_Click = new NavigateCommand<CurrenciesPageModel>
-                (new NavigationService<CurrenciesPageModel>( navigationStore, ()=> new CurrenciesPageModel(_currencyStore)));
+                (new NavigationService<CurrenciesPageModel>(navigationStore, () => new CurrenciesPageModel(_currencyStore, _navigationStore)));
             DetailPageButton_Click = new NavigateCommand<DetailPageModel>
                 (new NavigationService<DetailPageModel>(navigationStore, () => new DetailPageModel(_currencyStore)));
             SearchPageButton_Click = new NavigateCommand<SearchPageModel>
-                (new NavigationService<SearchPageModel>(navigationStore, () => new SearchPageModel(_currencyStore)));
+                (new NavigationService<SearchPageModel>(navigationStore, () => new SearchPageModel(_currencyStore, _navigationStore)));
+            ConvertPageButton_Click = new NavigateCommand<ConvertPageModel>
+                (new NavigationService<ConvertPageModel>(navigationStore, () => new ConvertPageModel(_currencyStore)));
         }
 
         private void OnCurrentViewModelChanged()
