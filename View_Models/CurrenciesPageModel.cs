@@ -34,7 +34,7 @@ namespace TEST_TASK.View_Models
             _navigationStore = navigationStore;
             _currencyStore = currencyStore;
             ListBox_Changed = new NavigateCommand<DetailPageModel>
-                (new NavigationService<DetailPageModel>(navigationStore, () => new DetailPageModel(_currencyStore)));
+                (new NavigationService<DetailPageModel>(_navigationStore, () => new DetailPageModel(_currencyStore)));
         }
     }
 }

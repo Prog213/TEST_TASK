@@ -66,7 +66,7 @@ public class API
                 }
             }
         }
-        catch (Exception ex)
+        catch 
         {
             ;
         }
